@@ -10,7 +10,7 @@ const MODEL = 'gemini-2.5-flash';
 
 const generateAIResponse = async (prompt) => {
   const model = genAI.getGenerativeModel({ model: MODEL });
-  console.log("🚀 Sending Prompt to Gemini:", prompt);
+  console.log(" Sending Prompt to Gemini:", prompt);
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text()?.trim();
@@ -20,17 +20,38 @@ const generateAIResponse = async (prompt) => {
 
 
 // Try to extract valid JSON
-const extractJSON = (text) => {
-  const match = text.match(/```json([\s\S]*?)```/i);
-  const jsonString = match ? match[1].trim() : text.trim();
 
+
+function extractJSON(rawText) {
   try {
-    return JSON.parse(jsonString);
-  } catch (err) {
-    console.error(' JSON parsing error:', err, '\nRaw Gemini Output:\n', text);
-    throw new Error('Invalid JSON format');
+    // Try direct parse first
+    return JSON.parse(rawText);
+  } catch (err1) {
+    // If rawText is wrapped in Markdown ```json ... ```
+    const codeBlockMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    if (codeBlockMatch && codeBlockMatch[1]) {
+      try {
+        return JSON.parse(codeBlockMatch[1].trim());
+      } catch (err2) {
+        console.warn(" Failed to parse inside code block:", err2.message);
+      }
+    }
+
+    // Fallback: extract first { ... } block manually
+    const firstJsonBlock = rawText.match(/\{[\s\S]*\}/);
+    if (firstJsonBlock) {
+      try {
+        return JSON.parse(firstJsonBlock[0]);
+      } catch (err3) {
+        console.warn(" Fallback JSON parse failed:", err3.message);
+      }
+    }
+
+    console.error(" Full Raw Gemini Output:\n", rawText);
+    throw new Error("Invalid JSON format in Gemini response");
   }
-};
+}
+
 
 
 // Generic handler
