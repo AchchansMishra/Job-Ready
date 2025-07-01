@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-console.log("🔑 GEMINI_API_KEY:", process.env.GEMINI_API_KEY ? "LOADED ✅" : "MISSING ❌");
 
 import express from 'express';
 import cors from 'cors';
@@ -17,12 +16,6 @@ import {
   generateConceptExplanation,
 } from './controllers/aiController.js';
 import { protect } from './middlewares/authMiddleware.js';
-
-import fs from 'fs';
-
-console.log("🔍 .env exists:", fs.existsSync('./.env'));
-
-
 
 const app = express();
 
@@ -59,4 +52,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Start server
 const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV === 'production') {
+  const frontendPath = path.join(__dirname, 'client', 'dist'); // or 'build' if you're using Create React App
+
+  app.use(express.static(frontendPath));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
