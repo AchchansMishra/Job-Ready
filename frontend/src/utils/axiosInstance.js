@@ -1,8 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "./apiPaths"; // make sure this path is correct
 
-// Create an Axios instance pointing to your Node.js backend
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8000", // your backend URL
+  baseURL: BASE_URL, // use your HTTPS production URL
   timeout: 80000,
   headers: {
     "Content-Type": "application/json",
@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Attach token from localStorage if available
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
