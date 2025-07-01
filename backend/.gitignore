@@ -1,0 +1,34 @@
+# Dependency directory
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage reports
+coverage/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor & OS-specific folders
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Uploads (if you use multer)
+uploads/
