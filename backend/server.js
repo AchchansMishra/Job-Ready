@@ -19,6 +19,7 @@ import { protect } from './middlewares/authMiddleware.js';
 
 const app = express();
 
+// Handle __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -31,6 +32,7 @@ app.use(
   })
 );
 
+// Connect DB
 connectDB();
 
 // Body parser middleware
@@ -45,16 +47,9 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/ai/generate-Questions', protect, generateInterviewQuestions);
 app.use('/api/ai/generate-explanation', protect, generateConceptExplanation);
 
+// Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-if (process.env.NODE_ENV === 'production') {
-  const frontendPath = path.join(__dirname, 'client', 'dist'); // or 'build' for CRA
-
-  app.use(express.static(frontendPath));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(frontendPath, 'index.html'));
-  });
-}
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
