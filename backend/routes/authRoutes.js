@@ -19,8 +19,16 @@ router.post('/upload-image', upload.single('image'), (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
 
-  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  const fileName = req.file.filename;
+
+  const BASE_URL =
+    process.env.NODE_ENV === 'production'
+      ? 'https://job-ready-bf3r.onrender.com'
+      : `${req.protocol}://${req.get('host')}`;
+
+  const imageUrl = `${BASE_URL}/uploads/${fileName}`;
   res.status(200).json({ imageUrl });
 });
+
 
 export default router;
