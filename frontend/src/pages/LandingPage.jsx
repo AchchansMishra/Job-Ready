@@ -31,8 +31,8 @@ const LandingPage=()=>{
 
             <div className="container mx-auto px-4 pt-6 pb-[200px] relative z-10">
                 <header className="flex justify-between items-center mb-16">
-                    <div className="text-xl text-black font-bold">
-                        Interview Prep AI
+                    <div className="text-3xl text-black font-bold">
+                        Job-Ready
                     </div>
                     {user ? (
                         <ProfileInfoCard />
