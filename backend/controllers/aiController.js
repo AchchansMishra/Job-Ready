@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config(); // 🔥 necessary for ESM modules
+dotenv.config(); 
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { questionAnswerPrompt, conceptExplainPrompt } from '../utils/prompts.js';
@@ -7,8 +7,6 @@ import { questionAnswerPrompt, conceptExplainPrompt } from '../utils/prompts.js'
 // Load Gemini API Key from env
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const MODEL = 'gemini-2.5-flash';
-console.log("🧪 Using GEMINI_API_KEY:", process.env.GEMINI_API_KEY?.slice(0, 10) + "...");
-
 
 const generateAIResponse = async (prompt) => {
   const model = genAI.getGenerativeModel({ model: MODEL });
@@ -29,7 +27,7 @@ const extractJSON = (text) => {
   try {
     return JSON.parse(jsonString);
   } catch (err) {
-    console.error('❌ JSON parsing error:', err, '\nRaw Gemini Output:\n', text);
+    console.error(' JSON parsing error:', err, '\nRaw Gemini Output:\n', text);
     throw new Error('Invalid JSON format');
   }
 };
@@ -43,7 +41,7 @@ const handleRequest = (promptBuilder) => async (req, res) => {
     const data = extractJSON(raw);
     res.status(200).json(data);
   } catch (err) {
-    console.error('🔥 Handler error:', err.message);
+    console.error(' Handler error:', err.message);
     res.status(500).json({ message: err.message });
   }
 };
@@ -53,7 +51,7 @@ export const generateInterviewQuestions = handleRequest(({ role, experience, top
   if (!role || !experience || !topicsToFocus || !numberOfQuestions) {
     throw new Error('Missing required fields');
   }
-  console.log("🧠 Prompt data received:", { role, experience, topicsToFocus, numberOfQuestions });
+  console.log(" Prompt data received:", { role, experience, topicsToFocus, numberOfQuestions });
   return questionAnswerPrompt(role, experience, topicsToFocus, numberOfQuestions);
 });
 
