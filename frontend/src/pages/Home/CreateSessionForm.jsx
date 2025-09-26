@@ -32,7 +32,6 @@ const CreateSessionForm = () => {
     setIsLoading(true);
 
     try {
-      // 🔄 Use your backend `/completions` route (calls Gemini 2.5 Flash internally)
       const aiRes = await axiosInstance.post(API_PATHS.AI.GENERATE_QUESTIONS, {
         role,
         experience,
@@ -110,3 +109,4 @@ const CreateSessionForm = () => {
 };
 
 export default CreateSessionForm;
+
