@@ -19,11 +19,11 @@ import { protect } from './middlewares/authMiddleware.js';
 
 const app = express();
 
-// Handle __dirname in ESM
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middleware to handle CORS
+
 app.use(
   cors({
     origin: '*',
@@ -32,24 +32,19 @@ app.use(
   })
 );
 
-// Connect DB
 connectDB();
 
-// Body parser middleware
 app.use(express.json());
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/questions', questionRoutes);
 
-// AI routes
 app.use('/api/ai/generate-Questions', protect, generateInterviewQuestions);
 app.use('/api/ai/generate-explanation', protect, generateConceptExplanation);
 
-// Static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
