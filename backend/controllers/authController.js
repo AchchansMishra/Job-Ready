@@ -13,17 +13,17 @@ export const registerUser = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
-    // hash password
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    // create new user
+    
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
       profileImageUrl,
     });
-    // return user data with jwt
+  
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -72,3 +72,4 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
