@@ -9,7 +9,6 @@ import upload from '../middlewares/uploadMiddleware.js';
 
 const router = express.Router();
 
-// auth routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/profile', protect, getUserProfile);
@@ -32,3 +31,4 @@ router.post('/upload-image', upload.single('image'), (req, res) => {
 
 
 export default router;
+
