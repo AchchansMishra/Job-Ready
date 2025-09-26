@@ -4,7 +4,7 @@ dotenv.config();
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { questionAnswerPrompt, conceptExplainPrompt } from '../utils/prompts.js';
 
-// Load Gemini API Key from env
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const MODEL = 'gemini-2.5-flash';
 
@@ -19,15 +19,12 @@ const generateAIResponse = async (prompt) => {
 };
 
 
-// Try to extract valid JSON
 
 
 function extractJSON(rawText) {
   try {
-    // Try direct parse first
     return JSON.parse(rawText);
   } catch (err1) {
-    // If rawText is wrapped in Markdown ```json ... ```
     const codeBlockMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
     if (codeBlockMatch && codeBlockMatch[1]) {
       try {
@@ -36,8 +33,6 @@ function extractJSON(rawText) {
         console.warn(" Failed to parse inside code block:", err2.message);
       }
     }
-
-    // Fallback: extract first { ... } block manually
     const firstJsonBlock = rawText.match(/\{[\s\S]*\}/);
     if (firstJsonBlock) {
       try {
@@ -53,8 +48,6 @@ function extractJSON(rawText) {
 }
 
 
-
-// Generic handler
 const handleRequest = (promptBuilder) => async (req, res) => {
   try {
     const prompt = promptBuilder(req.body);
@@ -67,7 +60,6 @@ const handleRequest = (promptBuilder) => async (req, res) => {
   }
 };
 
-// Interview Questions
 export const generateInterviewQuestions = handleRequest(({ role, experience, topicsToFocus, numberOfQuestions }) => {
   if (!role || !experience || !topicsToFocus || !numberOfQuestions) {
     throw new Error('Missing required fields');
@@ -76,9 +68,9 @@ export const generateInterviewQuestions = handleRequest(({ role, experience, top
   return questionAnswerPrompt(role, experience, topicsToFocus, numberOfQuestions);
 });
 
-// Concept Explanation
 export const generateConceptExplanation = handleRequest(({ question }) => {
   if (!question) throw new Error('Missing required fields');
   console.log("Received question:", question);
   return conceptExplainPrompt(question);
 });
+
