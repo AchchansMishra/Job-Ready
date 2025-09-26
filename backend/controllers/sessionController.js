@@ -1,11 +1,10 @@
 import Session from '../models/Session.js';
 import Question from '../models/Question.js';
 
-// Create a new session and linked questions
 export const createSession = async (req, res) => {
   try {
     const { role, experience, topicsToFocus, description, questions } = req.body;
-    const userId = req.user._id; // assuming middleware sets req.user
+    const userId = req.user._id; 
 
     const session = await Session.create({
       user: userId,
@@ -35,7 +34,6 @@ export const createSession = async (req, res) => {
   }
 };
 
-// Get all sessions for logged-in user
 export const getMySessions = async (req, res) => {
   try {
     const sessions = await Session.find({ user: req.user.id })
@@ -47,7 +45,7 @@ export const getMySessions = async (req, res) => {
   }
 };
 
-// Get a session by id with populated questions
+
 export const getSessionById = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id).populate({
@@ -65,7 +63,7 @@ export const getSessionById = async (req, res) => {
   }
 };
 
-// Delete a session and its questions
+
 export const deleteSession = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
@@ -87,3 +85,4 @@ export const deleteSession = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
