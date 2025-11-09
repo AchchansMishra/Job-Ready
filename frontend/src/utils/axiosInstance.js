@@ -1,8 +1,8 @@
 import axios from "axios";
-import { BASE_URL } from "./apiPaths"; // make sure this path is correct
+import { BASE_URL } from "./apiPaths"; 
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL, // use your HTTPS production URL
+  baseURL: BASE_URL, 
   timeout: 80000,
   headers: {
     "Content-Type": "application/json",
@@ -22,3 +22,4 @@ axiosInstance.interceptors.request.use(
 );
 
 export default axiosInstance;
+
