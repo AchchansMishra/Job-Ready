@@ -37,7 +37,7 @@ const UserProvider=({children})=>{
 
     const updateUser=(userData)=>{
         setUser(userData);
-        localStorage.setItem("token",userData.token); // save token
+        localStorage.setItem("token",userData.token); 
         setLoading(false);
     };
 
@@ -53,5 +53,6 @@ const UserProvider=({children})=>{
         </UserContext.Provider>
     );
 };
+
 
 export default UserProvider;
